@@ -190,9 +190,10 @@ class Vk{
      * @param bool $gid
      * @param array $files
      * @param bool (TRUE = вернуть список id файлов | FALSE = вернуть массив аттачей для прикрепления)
+     * @param array $additional_data {latitude, longitude, caption}
      * @return array|bool
      */
-    public function upload_photo($gid = 0, $files = [], $return_ids = false){
+    public function upload_photo($gid = 0, array $files = [], $return_ids = false, array $additional_data = []){
 
         if(count($files) == 0) return false;
         if(!function_exists('curl_init')) return false;
@@ -229,6 +230,8 @@ class Vk{
 
         $upload_data['group_id'] = intval($gid);
 
+        $upload_data += $additional_data;
+        
         $response = $this->api('photos.saveWallPhoto', $upload_data);
 
         if(count($response) > 0){
